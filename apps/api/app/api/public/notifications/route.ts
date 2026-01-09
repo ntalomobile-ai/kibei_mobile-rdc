@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { handleError, prisma } from '@/lib/api-utils';
+import { handleError, handleZodError, prisma } from '@/lib/api-utils';
 import { z } from 'zod';
 
 function toNum(v: any): number | null {
@@ -170,9 +170,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ data: merged.slice(0, limit) });
   } catch (error) {
     console.error('[Notifications] Error:', error);
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.issues }, { status: 400 });
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
     return handleError(error as Error);
   }
 }

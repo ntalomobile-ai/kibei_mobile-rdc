@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate, handleError, logAudit, prisma } from '@/lib/api-utils';
+import { authenticate, handleError, handleZodError, logAudit, prisma } from '@/lib/api-utils';
 import { z } from 'zod';
 
 const updateMarketSchema = z.object({
@@ -73,9 +73,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ data: market });
   } catch (error) {
     console.error('[Update Market Error]', error);
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.issues }, { status: 400 });
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
     // Gérer les erreurs Prisma spécifiques
     if (error && typeof error === 'object' && 'code' in error) {
       const prismaError = error as any;

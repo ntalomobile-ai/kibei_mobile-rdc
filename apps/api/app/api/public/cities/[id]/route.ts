@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { handleError, prisma } from '@/lib/api-utils';
+import { handleError, handleZodError, prisma } from '@/lib/api-utils';
 import { z } from 'zod';
 
 const idSchema = z.string().uuid();
@@ -26,9 +26,8 @@ export async function GET(
 
     return NextResponse.json({ data: city });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.issues }, { status: 400 });
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
     return handleError(error as Error);
   }
 }

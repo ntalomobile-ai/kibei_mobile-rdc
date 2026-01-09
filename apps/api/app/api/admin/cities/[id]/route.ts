@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate, handleError, logAudit, prisma } from '@/lib/api-utils';
+import { authenticate, handleError, handleZodError, logAudit, prisma } from '@/lib/api-utils';
 import { z } from 'zod';
 
 const idSchema = z.string().uuid();
@@ -33,9 +33,8 @@ export async function PUT(
 
     return NextResponse.json({ data: updated });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.issues }, { status: 400 });
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
     return handleError(error as Error);
   }
 }
@@ -69,9 +68,8 @@ export async function DELETE(
 
     return NextResponse.json({ data: deleted });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.issues }, { status: 400 });
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
     return handleError(error as Error);
   }
 }
