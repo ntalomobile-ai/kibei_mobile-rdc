@@ -56,7 +56,7 @@ model User {
   validatedExchangeRates ExchangeRate[] @relation("ExchangeRateValidator")
   priceReports         PriceReport[] @relation("ReportSubmitter")
   auditLogs            AuditLog[]
-  passwordResetTokens  PasswordResetToken[]
+  // passwordResetTokens  PasswordResetToken[] // Temporairement désactivé
 
   @@index([email])
   @@index([phoneNumber])
@@ -66,20 +66,21 @@ model User {
   @@map("users")
 }
 
-model PasswordResetToken {
-  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
-  expiresAt DateTime @map("expires_at") @db.Timestamptz()
-  usedAt    DateTime? @map("used_at") @db.Timestamptz()
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
-
-  @@index([token])
-  @@index([userId])
-  @@index([expiresAt])
-  @@map("password_reset_tokens")
-}
+// Temporairement désactivé - à réactiver plus tard
+// model PasswordResetToken {
+//   id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+//   userId    String   @map("user_id") @db.Uuid
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   token     String   @unique
+//   expiresAt DateTime @map("expires_at") @db.Timestamptz()
+//   usedAt    DateTime? @map("used_at") @db.Timestamptz()
+//   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+//
+//   @@index([token])
+//   @@index([userId])
+//   @@index([expiresAt])
+//   @@map("password_reset_tokens")
+// }
 
 model Province {
   id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
