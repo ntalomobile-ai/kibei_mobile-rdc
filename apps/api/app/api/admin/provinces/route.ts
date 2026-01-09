@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     if (error instanceof z.ZodError) {
       const firstError = error.errors[0];
       return NextResponse.json(
-        { error: firstError.message || 'Données invalides' },
+        { error: firstError?.message || 'Données invalides' },
         { status: 400 }
       );
     }

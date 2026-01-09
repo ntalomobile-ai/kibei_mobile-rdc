@@ -1,8 +1,7 @@
 {
-  "buildCommand": "cd ../../packages/db && npm run generate && cd ../../apps/api && npm run build",
+  "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "installCommand": "cd ../.. && npm install",
-  "framework": "nextjs",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
+  "framework": "nextjs"
 }
 

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node ../../scripts/sync-prisma-engine.js && next dev -p 3000",
-    "build": "cd ../../packages/db && npm run generate && cd ../../apps/api && next build",
+    "build": "npx prisma generate --schema=../../packages/db/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
