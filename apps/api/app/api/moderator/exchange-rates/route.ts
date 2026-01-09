@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate, handleError, logAudit, prisma } from '@/lib/api-utils';
+import { authenticate, handleError, handleZodError, logAudit, prisma } from '@/lib/api-utils';
 import { z } from 'zod';
 
 const validateSchema = z.object({
@@ -141,13 +141,8 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json({ data: updatedRate });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      return NextResponse.json(
-        { error: firstError?.message || 'Données invalides' },
-        { status: 400 }
-      );
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
     return handleError(error as Error);
   }
 }

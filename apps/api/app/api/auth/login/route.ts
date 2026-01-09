@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { signToken, setAuthCookie, hashPassword, verifyPassword, AuthError } from '@kibei/auth';
 import { z } from 'zod';
-import { authenticate } from '@/lib/api-utils';
+import { authenticate, handleZodError } from '@/lib/api-utils';
 
 import { prisma } from '@/lib/api-utils';
 
@@ -122,13 +122,8 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      return NextResponse.json(
-        { error: firstError?.message || 'Données invalides' },
-        { status: 400 }
-      );
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
 
     if (error instanceof AuthError) {
       return NextResponse.json({ error: error.message }, { status: 401 });

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { verifyToken } from '@kibei/auth';
 import type { Role } from '@kibei/db';
+import { ZodError } from 'zod';
 
 function normalizeDatabaseUrl(raw: string): string {
   // Supabase Postgres requires SSL in most configurations.
@@ -79,6 +80,17 @@ export function requireAuth(allowedRoles?: Role[]) {
     req.user = user;
     return null;
   };
+}
+
+export function handleZodError(error: unknown): NextResponse | null {
+  if (error instanceof ZodError) {
+    const firstError = error.errors[0];
+    return NextResponse.json(
+      { error: firstError?.message || 'Données invalides' },
+      { status: 400 }
+    );
+  }
+  return null;
 }
 
 export function handleError(error: Error) {
