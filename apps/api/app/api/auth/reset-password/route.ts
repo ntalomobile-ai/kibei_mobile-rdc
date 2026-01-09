@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/api-utils';
+import { prisma, handleZodError } from '@/lib/api-utils';
 import { hashPassword, verifyToken } from '@kibei/auth';
 
 const resetPasswordSchema = z.object({
@@ -97,13 +97,8 @@ export async function POST(req: NextRequest) {
       message: 'Votre mot de passe a été réinitialisé avec succès.',
     });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      return NextResponse.json(
-        { error: firstError.message || 'Données invalides' },
-        { status: 400 }
-      );
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
 
     console.error('[Reset Password Error]', error);
     return NextResponse.json(

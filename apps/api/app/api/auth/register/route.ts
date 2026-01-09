@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { signToken, setAuthCookie, hashPassword } from '@kibei/auth';
 import { z } from 'zod';
-import { prisma } from '@/lib/api-utils';
+import { prisma, handleZodError } from '@/lib/api-utils';
 import { Role } from '@kibei/db';
 
 const registerSchema = z.object({
@@ -114,13 +114,8 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      return NextResponse.json(
-        { error: firstError.message || 'Données invalides' },
-        { status: 400 }
-      );
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
 
     // Vérifier les erreurs Prisma (contraintes uniques, etc.)
     if (error instanceof Error && error.message.includes('Unique constraint')) {

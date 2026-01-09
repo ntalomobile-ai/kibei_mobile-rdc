@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/api-utils';
+import { prisma, handleZodError } from '@/lib/api-utils';
 import { randomBytes } from 'crypto';
 import { signToken } from '@kibei/auth';
 
@@ -90,13 +90,8 @@ export async function POST(req: NextRequest) {
       message: 'Si cet email existe dans notre système, un lien de réinitialisation a été envoyé.',
     });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      return NextResponse.json(
-        { error: firstError.message || 'Données invalides' },
-        { status: 400 }
-      );
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
 
     console.error('[Forgot Password Error]', error);
     return NextResponse.json(

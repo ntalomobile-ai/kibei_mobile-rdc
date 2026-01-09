@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authenticate, handleError, prisma } from '@/lib/api-utils';
+import { authenticate, handleError, handleZodError, prisma } from '@/lib/api-utils';
 import { z } from 'zod';
 
 const updateProfileSchema = z.object({
@@ -88,13 +88,8 @@ export async function PUT(req: NextRequest) {
       message: 'Profil mis à jour avec succès',
     });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      return NextResponse.json(
-        { error: firstError.message || 'Données invalides' },
-        { status: 400 }
-      );
-    }
+    const zodErrorResponse = handleZodError(error);
+    if (zodErrorResponse) return zodErrorResponse;
 
     // Vérifier les erreurs Prisma (contraintes uniques, etc.)
     if (error instanceof Error && error.message.includes('Unique constraint')) {
