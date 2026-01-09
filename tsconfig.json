@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@kibei/db": ["packages/db"],
+      "@kibei/auth": ["packages/auth"],
+      "@kibei/services": ["packages/services"],
+      "@kibei/ui": ["packages/ui"],
+      "@kibei/i18n": ["packages/i18n"],
+      "@kibei/utils": ["packages/utils"],
+      "@kibei/config": ["packages/config"]
+    }
+  },
+  "include": [],
+  "exclude": ["node_modules"]
+}

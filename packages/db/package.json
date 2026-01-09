@@ -1,0 +1,22 @@
+{
+  "name": "@kibei/db",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "db:push": "dotenv -e ../../apps/api/.env -- prisma db push",
+    "db:push:force": "dotenv -e ../../apps/api/.env -- prisma db push --accept-data-loss",
+    "db:migrate": "dotenv -e ../../apps/api/.env -- prisma migrate dev",
+    "db:seed": "dotenv -e ../../apps/api/.env -- tsx ../../scripts/seed.ts",
+    "generate": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.0",
+    "dotenv-cli": "^7.4.4",
+    "tsx": "latest"
+  }
+}

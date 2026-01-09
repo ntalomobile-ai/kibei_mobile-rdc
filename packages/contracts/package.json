@@ -1,0 +1,9 @@
+{
+  "name": "@kibei/contracts",
+  "version": "1.0.0",
+  "description": "API contracts and types for KiBei (Web + Mobile)",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT",
+  "keywords": ["kibei", "api", "contracts", "typescript", "dart"]
+}

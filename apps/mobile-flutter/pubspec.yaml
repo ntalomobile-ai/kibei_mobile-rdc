@@ -1,0 +1,68 @@
+name: kibei_mobile
+description: KiBei Mobile RDC - Application Flutter (Android/iOS)
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # État & configuration
+  riverpod: ^2.4.0
+  riverpod_generator: ^2.3.0
+  freezed_annotation: ^2.4.0
+
+  # Réseau & API
+  http: ^1.1.0
+  dio: ^5.3.0
+
+  # Sérialisation
+  json_serializable: ^6.7.0
+  json_annotation: ^4.8.0
+
+  # Stockage local
+  shared_preferences: ^2.2.0
+  hive: ^2.2.0
+  hive_flutter: ^1.1.0
+
+  # Sécurité
+  flutter_secure_storage: ^9.0.0
+
+  # UI & Navigation
+  go_router: ^11.0.0
+  flutter_svg: ^2.0.0
+
+  # Multilangue
+  intl: ^0.19.0
+
+  # Logging & debugging
+  logger: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.0
+  riverpod_generator: ^2.3.0
+  freezed: ^2.4.0
+  json_serializable: ^6.7.0
+
+flutter:
+  uses-material-design: true
+
+  # Assets (will be populated as needed)
+  assets:
+    - assets/translations/
+
+  # Fonts
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700

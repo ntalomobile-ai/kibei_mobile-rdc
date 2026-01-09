@@ -1,0 +1,13 @@
+{
+  "name": "@kibei/services",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "dependencies": {
+    "@kibei/db": "*"
+  },
+  "devDependencies": {
+    "typescript": "latest"
+  }
+}
