@@ -84,7 +84,10 @@ export function requireAuth(allowedRoles?: Role[]) {
 
 export function handleZodError(error: unknown): NextResponse | null {
   if (error instanceof ZodError) {
-    const firstError = error.errors[0];
+    const zodError = error as ZodError;
+    // Accéder à la propriété 'errors' via l'interface ZodError
+    const errors = (zodError as any).errors as Array<{ message?: string }>;
+    const firstError = errors?.[0];
     return NextResponse.json(
       { error: firstError?.message || 'Données invalides' },
       { status: 400 }
