@@ -45,7 +45,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ data: priceRecord }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      const firstError = error.errors[0];
+      return NextResponse.json(
+        { error: firstError?.message || 'Données invalides' },
+        { status: 400 }
+      );
     }
     return handleError(error as Error);
   }
