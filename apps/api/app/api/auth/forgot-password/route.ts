@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma, handleZodError } from '@/lib/api-utils';
 import { randomBytes } from 'crypto';
-import { signToken } from '@kibei/auth';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email().trim().toLowerCase(),
@@ -32,18 +31,8 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Générer un token sécurisé
+    // Générer un token sécurisé (hex, pas JWT)
     const token = randomBytes(32).toString('hex');
-    
-    // Créer un JWT pour le token (optionnel, pour validation côté serveur)
-    const jwtToken = await signToken(
-      {
-        sub: user.id,
-        email: user.email,
-        token,
-      },
-      RESET_TOKEN_EXPIRY
-    );
 
     // Calculer la date d'expiration
     const expiresAt = new Date();
@@ -61,17 +50,19 @@ export async function POST(req: NextRequest) {
     });
 
     // Créer le token de réinitialisation
+    // Utiliser le token hex généré plutôt que le JWT pour le stockage en DB
     await prisma.passwordResetToken.create({
       data: {
         userId: user.id,
-        token: jwtToken, // Stocker le JWT comme token
+        token: token, // Stocker le token hex généré
         expiresAt,
       },
     });
 
     // Construire l'URL de réinitialisation
+    // Utiliser le token hex pour l'URL, pas le JWT
     const webUrl = process.env.NEXT_PUBLIC_WEB_URL || 'http://localhost:3001';
-    const resetUrl = `${webUrl}/reset-password?token=${jwtToken}`;
+    const resetUrl = `${webUrl}/reset-password?token=${token}`;
 
     // TODO: Envoyer l'email avec le lien de réinitialisation
     // Pour l'instant, on log dans la console pour le développement

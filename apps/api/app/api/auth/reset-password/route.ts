@@ -50,21 +50,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Valider le token JWT (optionnel, pour vérification supplémentaire)
-    try {
-      const payload = await verifyToken(token);
-      if (!payload || payload.sub !== resetToken.userId) {
-        return NextResponse.json(
-          { error: 'Token invalide' },
-          { status: 400 }
-        );
-      }
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Token invalide ou expiré' },
-        { status: 400 }
-      );
-    }
+    // Le token est déjà validé via la base de données (existence, expiration, usage)
+    // Pas besoin de vérification JWT supplémentaire
 
     // Hacher le nouveau mot de passe
     const passwordHash = hashPassword(password);
