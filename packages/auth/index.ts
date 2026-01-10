@@ -24,7 +24,7 @@ export class AuthError extends Error {
 
 export async function signToken(payload: JWTPayload, expiresIn: number = 900) {
   try {
-    const token = await new SignJWT(payload)
+    const token = await new SignJWT(payload as unknown as Record<string, unknown>)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime(Math.floor(Date.now() / 1000) + expiresIn)
@@ -39,7 +39,7 @@ export async function signToken(payload: JWTPayload, expiresIn: number = 900) {
 export async function verifyToken(token: string): Promise<JWTPayload> {
   try {
     const verified = await jwtVerify(token, JWT_SECRET);
-    return verified.payload as JWTPayload;
+    return verified.payload as unknown as JWTPayload;
   } catch (error) {
     throw new AuthError('Token verification failed', 'TOKEN_VERIFY_FAILED');
   }

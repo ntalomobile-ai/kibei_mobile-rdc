@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         fullName,
         phoneNumber: phoneNumber || null,
         passwordHash,
-        role: Role.user_public, // Forcer le rôle user_public pour les inscriptions publiques
+        role: 'user_public', // Forcer le rôle user_public pour les inscriptions publiques
         isActive: true,
       },
       select: {

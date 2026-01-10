@@ -75,6 +75,9 @@ export async function GET(req: NextRequest) {
       }),
     ]);
 
+    // Fetch user's createdAt from DB
+    const fullUser = await prisma.user.findUnique({ where: { id: user.id }, select: { createdAt: true } });
+
     const stats = {
       totalReports,
       approvedReports,
@@ -82,10 +85,10 @@ export async function GET(req: NextRequest) {
       pendingReports: totalReports,
       recentReports,
       recentActivities,
-      joinedDate: user.createdAt,
-      memberSince: Math.floor(
-        (Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24)
-      ),
+      joinedDate: fullUser?.createdAt || null,
+      memberSince: fullUser?.createdAt
+        ? Math.floor((Date.now() - new Date(fullUser.createdAt).getTime()) / (1000 * 60 * 60 * 24))
+        : null,
     };
 
     return NextResponse.json({ data: stats });

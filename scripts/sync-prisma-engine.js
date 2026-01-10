@@ -25,8 +25,8 @@ function main() {
 
   if (!exists(src)) {
     console.warn(`[sync-prisma-engine] Source not found: ${src}`);
-    console.warn('[sync-prisma-engine] This is normal if Prisma hasn't been generated yet.');
-    console.warn('[sync-prisma-engine] Prisma will be generated during build.');
+    console.warn("[sync-prisma-engine] This is normal if Prisma hasn't been generated yet.");
+    console.warn("[sync-prisma-engine] Prisma will be generated during build.");
     return; // Ne pas faire échouer le build
   }
 
