@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd ../.. && npm ci --prefer-offline --no-audit && cd apps/api && npm run build",
+  "buildCommand": "cd ../.. && npm install && cd apps/api && npm run build",
   "outputDirectory": ".next",
-  "installCommand": "cd ../.. && npm ci --prefer-offline --no-audit",
+  "installCommand": "cd ../.. && npm install",
   "framework": "nextjs"
 }
 
