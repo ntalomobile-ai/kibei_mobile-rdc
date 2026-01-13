@@ -1,0 +1,41 @@
+[build]
+  # Répertoire de base du monorepo
+  base = "."
+  # Commande de build pour l'application web
+  # npm install installera tous les workspaces automatiquement
+  # Puis on build l'app web (les packages locaux @kibei/* seront disponibles via symlinks)
+  command = "npm run build --workspace=kibei-web"
+  # Répertoire de publication (Next.js avec plugin Netlify)
+  publish = "apps/web/.next"
+
+[build.environment]
+  # Version de Node.js
+  NODE_VERSION = "20.0.0"
+  # Variables d'environnement nécessaires pour le build
+  # Note: Les variables sensibles doivent être configurées dans le dashboard Netlify
+
+# Configuration Next.js pour Netlify
+# Le plugin Next.js de Netlify gère automatiquement les redirections et le routing
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Headers de sécurité
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Headers pour les assets statiques
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Headers pour les images
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

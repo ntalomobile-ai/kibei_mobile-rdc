@@ -47,3 +47,6 @@ api-dev.out.log
 
 # Turbo
 .turbo
+
+# Netlify
+.netlify
