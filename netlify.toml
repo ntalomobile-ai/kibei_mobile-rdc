@@ -2,9 +2,11 @@
   # Répertoire de base du monorepo
   base = "."
   # Commande de build pour l'application web
-  # npm install installera tous les workspaces automatiquement
-  # Puis on build l'app web (les packages locaux @kibei/* seront disponibles via symlinks)
-  command = "npm run build --workspace=kibei-web"
+  # Note: Netlify exécute automatiquement 'npm install' avant cette commande
+  # Pour un monorepo avec workspaces, on doit s'assurer que toutes les dépendances
+  # (y compris devDependencies) sont installées correctement
+  # npm install dans la racine installera toutes les dépendances des workspaces
+  command = "npm install && npm run build --workspace=kibei-web"
   # Répertoire de publication (Next.js avec plugin Netlify)
   publish = "apps/web/.next"
 

@@ -7,7 +7,7 @@ Ce guide vous explique **étape par étape** comment configurer toutes les varia
 1. [Variables requises](#variables-requises)
 2. [Comment les configurer sur Netlify](#configuration-sur-netlify)
 3. [D'où obtenir les valeurs](#obtenir-les-valeurs)
-4. [Exemple complet](#exemple-complet)
+4. [Template pour vos variables](#template-pour-vos-variables)
 5. [Vérification](#vérification)
 
 ---
@@ -35,6 +35,14 @@ Voici toutes les variables d'environnement que vous devez configurer dans Netlif
 |----------|-------------|-------------------|
 | `JWT_EXPIRY` | Durée de vie du token JWT (secondes) | `900` (15 minutes) |
 | `JWT_REFRESH_EXPIRY` | Durée de vie du refresh token (secondes) | `604800` (7 jours) |
+
+### 🟢 Variables OPTIONNELLES (services additionnels)
+
+| Variable | Description | Où l'obtenir |
+|----------|-------------|--------------|
+| `BREVO_API_KEY` | Clé API Brevo (ex-Sendinblue) pour l'envoi d'emails | Dashboard Brevo → API Keys |
+| `BREVO_SENDER_EMAIL` | Email de l'expéditeur pour les emails transactionnels | Votre email vérifié dans Brevo |
+| `GETON_TOKEN_VERCEL` | Token Vercel pour intégrations (si nécessaire) | Vercel Dashboard → Settings → Tokens |
 
 ---
 
@@ -167,26 +175,73 @@ C'est l'URL de votre API backend :
 
 Toujours mettre : `production`
 
+### 4. Variables Email (Brevo)
+
+Si vous utilisez Brevo (ex-Sendinblue) pour l'envoi d'emails transactionnels :
+
+#### BREVO_API_KEY
+
+1. Connectez-vous à [app.brevo.com](https://app.brevo.com)
+2. Allez dans **Settings** → **SMTP & API**
+3. Dans la section **API Keys**, créez ou copiez votre clé API
+4. **⚠️ Confidential :** Ne partagez JAMAIS cette clé publiquement
+
+#### BREVO_SENDER_EMAIL
+
+1. Dans Brevo, allez dans **Settings** → **Senders & IP**
+2. Utilisez un email vérifié dans votre compte Brevo
+3. Format : `votre-email@example.com`
+4. Cet email sera utilisé comme expéditeur pour les emails transactionnels (ex: réinitialisation de mot de passe)
+
+**💡 Note :** Ces variables sont optionnelles. Si vous ne les configurez pas, la fonctionnalité d'envoi d'emails sera désactivée.
+
+### 5. Variables Vercel (Optionnel)
+
+#### GETON_TOKEN_VERCEL
+
+Si vous avez besoin d'intégrations avec Vercel (déploiements, webhooks, etc.) :
+
+1. Connectez-vous à [vercel.com](https://vercel.com)
+2. Allez dans **Settings** → **Tokens**
+3. Créez un nouveau token
+4. Copiez le token généré
+
+**💡 Note :** Cette variable est uniquement nécessaire si vous utilisez des fonctionnalités spécifiques Vercel. Pour un déploiement Netlify standard, elle n'est pas requise.
+
 ---
 
-## 📝 Exemple complet
+## 📝 Template pour vos variables
 
-Voici un exemple complet de toutes les variables configurées dans Netlify :
+Utilisez le template ci-dessous comme référence pour configurer vos variables dans Netlify. **⚠️ Ce template correspond à `.env.local.example` mais adapté pour la production Netlify.**
 
-```
-SUPABASE_URL=https://abcdefghijklmnop.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiY2RlZmdoaWprbG1ub3AiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTY0Njg3NjUyMCwiZXhwIjoxOTYyNDUyNTIwfQ.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiY2RlZmdoaWprbG1ub3AiLCJyb2xlIjoic2VydmljZV9yb2xlIiwiaWF0IjoxNjQ2ODc2NTIwLCJleHAiOjE5NjI0NTI1MjB9.yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-DATABASE_URL=postgresql://postgres:MonMotDePasseSecret123@db.abcdefghijklmnop.supabase.co:5432/postgres
-JWT_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2
+```env
+# SUPABASE
+SUPABASE_URL=https://xxxxx.supabase.co
+SUPABASE_ANON_KEY=eyJxxxxxxxxxx
+SUPABASE_SERVICE_ROLE_KEY=eyJxxxxxxxxxx
+
+# DATABASE
+DATABASE_URL=postgresql://postgres:password@db.xxxxx.supabase.co:5432/postgres
+
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-min-32-chars
 JWT_EXPIRY=900
 JWT_REFRESH_EXPIRY=604800
-NEXT_PUBLIC_API_URL=https://kibei-api.netlify.app
-NEXT_PUBLIC_WEB_URL=https://kibei-mobile-rdc.netlify.app
+
+# APP URLs (Production)
+NEXT_PUBLIC_API_URL=https://votre-api-url.com
+NEXT_PUBLIC_WEB_URL=https://votre-site.netlify.app
 NODE_ENV=production
+
+# EMAIL (Brevo - Optionnel)
+BREVO_API_KEY=votre-cle-api-brevo
+BREVO_SENDER_EMAIL=votre-email@example.com
+
+# VERCEL (Optionnel - si intégrations Vercel nécessaires)
+GETON_TOKEN_VERCEL=votre-token-vercel
 ```
 
-**⚠️ NE COPIEZ PAS ces exemples !** Utilisez vos propres valeurs.
+**💡 Note :** Remplacez les valeurs `xxxxx`, `eyJxxxxxxxxxx`, etc. par vos vraies valeurs obtenues depuis Supabase, Brevo, et votre configuration Netlify. Consultez la section [Obtenir les valeurs](#obtenir-les-valeurs) pour savoir où trouver chaque variable.
 
 ---
 
