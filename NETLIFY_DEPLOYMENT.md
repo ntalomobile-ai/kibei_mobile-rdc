@@ -66,7 +66,11 @@ Netlify devrait détecter automatiquement la configuration depuis `netlify.toml`
 
 ### Étape 3: Configurer les variables d'environnement
 
-Dans les paramètres du site Netlify, allez dans **Site settings** → **Environment variables** et ajoutez:
+**📖 Guide détaillé :** Consultez **[NETLIFY_ENV_VARIABLES.md](./NETLIFY_ENV_VARIABLES.md)** pour un guide complet étape par étape.
+
+**Résumé rapide :**
+
+Dans les paramètres du site Netlify, allez dans **Site settings** → **Environment variables** et ajoutez les variables suivantes:
 
 #### Variables requises:
 
@@ -90,18 +94,17 @@ NEXT_PUBLIC_WEB_URL=https://votre-site-netlify.netlify.app
 NODE_ENV=production
 ```
 
-#### Variables optionnelles:
-
-```env
-# Si vous utilisez d'autres services
-SENTRY_DSN=...
-ANALYTICS_ID=...
-```
+**💡 Pour obtenir ces valeurs :**
+- Variables Supabase : **Settings** → **API** dans votre projet Supabase
+- `DATABASE_URL` : **Settings** → **Database** dans Supabase
+- `JWT_SECRET` : Générez avec `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+- `NEXT_PUBLIC_WEB_URL` : URL Netlify (fournie après le premier déploiement)
 
 **⚠️ Important:** 
 - Ne commitez JAMAIS ces variables dans Git
 - Utilisez toujours les variables d'environnement Netlify pour les valeurs sensibles
 - Pour `NEXT_PUBLIC_*`, ces variables seront exposées au client, soyez prudent
+- Consultez **[NETLIFY_ENV_VARIABLES.md](./NETLIFY_ENV_VARIABLES.md)** pour les détails complets
 
 ### Étape 4: Déployer
 
