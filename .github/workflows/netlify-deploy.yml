@@ -1,0 +1,33 @@
+name: Netlify Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build --workspace=kibei-web
+        env:
+          # Ces variables doivent être définies dans les secrets GitHub
+          # ou configurées directement dans Netlify
+          NODE_ENV: production
