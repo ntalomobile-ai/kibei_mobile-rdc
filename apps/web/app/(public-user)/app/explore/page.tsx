@@ -389,7 +389,7 @@ export default function PublicExplorePage() {
               <div key={cat}>
                 <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                   <span>{cat}</span>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="default" className="text-xs">
                     {products.length}
                   </Badge>
                 </h2>

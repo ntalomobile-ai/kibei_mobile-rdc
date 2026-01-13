@@ -191,7 +191,7 @@ export default function PricesPage() {
         </p>
       </div>
 
-      {error && <ErrorAlert message={error} className="mb-6" />}
+      {error && <ErrorAlert message={error} />}
 
       {/* Barre de recherche et filtres */}
       <Card className="p-6 mb-6 bg-white/5 border-white/10">
@@ -338,7 +338,7 @@ export default function PricesPage() {
             <div key={category}>
               <h2 className="text-2xl font-semibold text-white mb-4 flex items-center gap-2">
                 <span>{category}</span>
-                <Badge variant="secondary">{categoryPrices.length}</Badge>
+                <Badge variant="default">{categoryPrices.length}</Badge>
               </h2>
               {viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -393,7 +393,7 @@ function PriceCard({ price }: { price: any }) {
           <h3 className="text-lg font-semibold text-white mb-1">
             {price.product?.nameFr}
           </h3>
-          <Badge variant="outline" className="text-xs mb-2">
+          <Badge variant="default" className="text-xs mb-2">
             {price.product?.category}
           </Badge>
           <p className="text-slate-300/80 text-sm mt-2">
@@ -443,7 +443,7 @@ function PriceListItem({ price }: { price: any }) {
             <h3 className="text-lg font-semibold text-white">
               {price.product?.nameFr}
             </h3>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="default" className="text-xs">
               {price.product?.category}
             </Badge>
           </div>

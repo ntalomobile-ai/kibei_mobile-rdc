@@ -456,7 +456,7 @@ export default function PublicItemPage() {
           <div className="bg-white/5 rounded-lg p-3 text-center">
             <div className="text-xs text-slate-300/70 mb-1">Moyenne</div>
             <div className="text-white font-medium text-sm">
-              {values.length ? formatFC(values.reduce((a, b) => a + b, 0) / values.length) : '—'}
+              {values.length ? formatFC(values.reduce((a: number, b: number) => a + b, 0) / values.length) : '—'}
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ export default function PublicMarketPage() {
       setLoading(true);
       setError('');
       try {
-        const [m, p] = await Promise.all([fetchMarketById(id), fetchPrices(id)]);
+        const [m, p] = await Promise.all([fetchMarketById(id), fetchPrices({ marketId: id })]);
         setMarket(m.data);
         setPrices(p.data || []);
       } catch {

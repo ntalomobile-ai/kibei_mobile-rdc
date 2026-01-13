@@ -252,7 +252,7 @@ export default function DashboardReportsPage() {
                       {getStatusLabel(report.status)}
                     </Badge>
                     {report.transmittedToAuthorities && (
-                      <Badge variant="info">🏛️ Transmis</Badge>
+                      <Badge variant="default">🏛️ Transmis</Badge>
                     )}
                   </div>
 

@@ -37,7 +37,7 @@ function getStatusInfo(status: string, transmitted: boolean) {
   if (transmitted) {
     return {
       label: 'Transmis aux autorités',
-      color: 'info' as const,
+      color: 'default' as const,
       icon: '🏛️',
       step: 3,
     };
@@ -60,7 +60,7 @@ function getStatusInfo(status: string, transmitted: boolean) {
     case 'dismissed':
       return {
         label: 'Classé sans suite',
-        color: 'secondary' as const,
+        color: 'default' as const,
         icon: '📁',
         step: 4,
       };
@@ -114,7 +114,7 @@ function TimelineStep({ number, title, description, completed, current, icon }: 
 }
 
 export default function MyReportsPage() {
-  const { user, loading: userLoading } = useUser();
+  const { user, isLoading: userLoading } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
