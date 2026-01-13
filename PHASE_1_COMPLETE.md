@@ -118,8 +118,7 @@ kibei/                                    # Monorepo root
     ├── FLUTTER_INTEGRATION.md           # Flutter setup guide
     ├── COMMANDS.md                      # Command reference
     ├── CONTRIBUTING.md                  # Development guidelines
-    ├── DELIVERABLES.md                  # Delivery checklist
-    └── START.sh                         # Quick reference
+    └── DELIVERABLES.md                  # Delivery checklist
 ```
 
 ---
@@ -337,9 +336,7 @@ Same JWT format, different storage:
 ## 📚 Documentation Hierarchy
 
 ```
-1. START.sh                     ← Begin here (quick reference)
-   ↓
-2. README.md                    ← Project overview
+1. README.md                    ← Begin here (project overview)
    ↓
 3. ARCHITECTURE_MONOREPO.md    ← Understand the structure
    ↓

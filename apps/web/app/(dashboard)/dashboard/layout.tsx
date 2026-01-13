@@ -43,9 +43,17 @@ export default function DashboardLayout({
         setUser(me.user);
       } catch (err: any) {
         // Si la session est expirée, déconnecter et rediriger
-        console.error('Session expirée:', err);
-        logout();
-        router.push('/login');
+        // Ne pas logger les erreurs 401 normales (session expirée)
+        if (err?.isAuthError && err?.status === 401) {
+          // Session expirée - redirection silencieuse
+          logout();
+          router.push('/login');
+        } else {
+          // Autre erreur
+          console.error('Erreur lors de la synchronisation de la session:', err);
+          logout();
+          router.push('/login');
+        }
       }
     }
     syncMe();

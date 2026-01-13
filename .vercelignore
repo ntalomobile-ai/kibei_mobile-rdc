@@ -1,0 +1,26 @@
+# Ignore Flutter app (not needed for Vercel deployment)
+apps/mobile-flutter/
+
+# Ignore development files
+*.log
+.env.local
+.env*.local
+
+# Ignore build artifacts (will be generated)
+.next/
+dist/
+build/
+node_modules/
+
+# Ignore test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Ignore documentation (optional, can be included)
+*.md
+!README.md
+
+# Ignore scripts (optional)
+scripts/

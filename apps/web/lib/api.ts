@@ -1,11 +1,30 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+// In development, use the proxy (same origin) to avoid CORS/cookie issues
+// In production, use the full API URL
+const API_BASE_URL = 
+  process.env.NODE_ENV === 'development' 
+    ? '' // Use proxy in development (rewrites in next.config.js)
+    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000');
 
 async function refreshSessionIfPossible() {
-  const r = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
-    method: 'POST',
-    credentials: 'include',
-  });
-  if (!r.ok) throw new Error('Refresh failed');
+  try {
+    const r = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (!r.ok) {
+      // Si 401, le refresh token n'existe pas ou a expiré - c'est normal si pas connecté
+      if (r.status === 401) {
+        throw new Error('Refresh token expired or missing');
+      }
+      throw new Error('Refresh failed');
+    }
+  } catch (error) {
+    // Ne pas propager l'erreur si c'est juste un refresh token manquant (normal si pas connecté)
+    if (error instanceof Error && error.message.includes('Refresh token expired')) {
+      throw error;
+    }
+    throw new Error('Refresh failed');
+  }
 }
 
 async function fetchJsonWithAuth(url: string, init: RequestInit = {}) {

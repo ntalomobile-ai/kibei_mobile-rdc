@@ -34,6 +34,10 @@ Voir [FLUTTER_INTEGRATION.md](./FLUTTER_INTEGRATION.md) pour setup complet.
 2. Lire [PHASE_1_COMPLETE.md](./PHASE_1_COMPLETE.md) (5 min)
 3. Vérifier [DELIVERABLES.md](./DELIVERABLES.md) (completion checklist)
 
+### 🚀 Je veux déployer sur Vercel
+Voir [VERCEL_QUICKSTART.md](./VERCEL_QUICKSTART.md) pour le guide rapide (10 min)  
+Voir [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) pour le guide complet
+
 ### 📚 Je veux comprendre tout
 Voir [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md) pour le guide complet.
 

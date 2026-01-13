@@ -29,14 +29,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Cela permet de restaurer la session après un rafraîchissement
         const me = await fetchMe();
         setUser(me.user);
-      } catch (error) {
+      } catch (error: any) {
         // Si la session est expirée ou invalide
-        if (user) {
-          // Si on avait un utilisateur dans le store mais que les cookies sont invalides
-          console.log('Session expirée, déconnexion...');
-          logout();
+        // Ne pas logger les erreurs 401 normales (utilisateur non connecté)
+        if (error?.isAuthError && error?.status === 401) {
+          // Erreur d'authentification normale (pas connecté ou session expirée)
+          if (user) {
+            // Si on avait un utilisateur dans le store mais que les cookies sont invalides
+            console.log('Session expirée, déconnexion...');
+            logout();
+          }
+          // Si pas d'utilisateur, on laisse simplement l'utilisateur non connecté (pas d'erreur à logger)
+        } else {
+          // Autre type d'erreur (réseau, serveur, etc.)
+          console.error('Erreur lors de la vérification de l\'authentification:', error);
+          if (user) {
+            logout();
+          }
         }
-        // Si pas d'utilisateur, on laisse simplement l'utilisateur non connecté
       } finally {
         setLoading(false);
       }

@@ -4,7 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useStore';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+// In development, use the proxy (same origin) to avoid CORS/cookie issues
+// In production, use the full API URL
+const API_BASE_URL = 
+  process.env.NODE_ENV === 'development' 
+    ? '' // Use proxy in development (rewrites in next.config.js)
+    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000');
 
 export async function loginUser(identifier: string, password: string) {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
@@ -46,16 +51,28 @@ export async function logoutUser() {
 }
 
 export async function refreshSession() {
-  const response = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      // Si 401, le refresh token n'existe pas ou a expiré
+      if (response.status === 401) {
+        throw new Error('Refresh token expired or missing');
+      }
+      throw new Error('Refresh failed');
+    }
+
+    return response.json();
+  } catch (error) {
+    // Ne pas logger les erreurs de refresh token manquant (normal si pas connecté)
+    if (error instanceof Error && error.message.includes('Refresh token expired')) {
+      throw error;
+    }
     throw new Error('Refresh failed');
   }
-
-  return response.json();
 }
 
 export async function fetchMe() {
@@ -71,12 +88,21 @@ export async function fetchMe() {
         credentials: 'include',
       });
     } catch (refreshError) {
-      // Si le refresh échoue, le refresh token a probablement expiré
-      throw new Error('Session expirée. Veuillez vous reconnecter.');
+      // Si le refresh échoue, le refresh token a probablement expiré ou n'existe pas
+      // C'est normal si l'utilisateur n'est pas connecté, on lance une erreur silencieuse
+      const error = new Error('Not authenticated');
+      (error as any).status = 401;
+      (error as any).isAuthError = true; // Flag pour indiquer que c'est une erreur d'auth normale
+      throw error;
     }
   }
 
-  if (!response.ok) throw new Error('Not authenticated');
+  if (!response.ok) {
+    const error = new Error('Not authenticated');
+    (error as any).status = response.status;
+    (error as any).isAuthError = true;
+    throw error;
+  }
 
   return response.json();
 }

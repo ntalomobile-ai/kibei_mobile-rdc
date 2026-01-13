@@ -43,7 +43,6 @@
 |----------|----------|------|-----------|
 | [README.md](./README.md) | Everyone | 5 min | Project overview, quick start |
 | [PHASE_1_COMPLETE.md](./PHASE_1_COMPLETE.md) | Developers | 10 min | What's built, status, next steps |
-| [START.sh](./START.sh) | Quick reference | 2 min | ASCII art guide, test accounts |
 
 ### 🔌 API & Integration
 
@@ -84,8 +83,6 @@
 
 ### Path 1: New Team Member
 ```
-START.sh                     (2 min - get overview)
-  ↓
 README.md                    (5 min - project intro)
   ↓
 PHASE_1_COMPLETE.md          (10 min - current state)
@@ -157,7 +154,7 @@ A: See [README.md](./README.md) → "Quick Start"
 A: See [COMMANDS.md](./COMMANDS.md) (full reference)
 
 **Q: How do I login?**  
-A: Test accounts in [START.sh](./START.sh) or [DELIVERABLES.md](./DELIVERABLES.md)
+A: Test accounts in [DELIVERABLES.md](./DELIVERABLES.md) or [README.md](./README.md)
 
 **Q: How does Flutter integrate?**  
 A: See [ARCHITECTURE_DECISION.md](./ARCHITECTURE_DECISION.md) → "Why Flutter is isolated?"
@@ -179,7 +176,6 @@ A: See [API.md](./API.md) (complete reference)
 ```
 / (root)
 ├── README.md                    ← START HERE (project overview)
-├── START.sh                     ← Quick reference script
 ├── PHASE_1_COMPLETE.md          ← Phase 1 status & checklist
 ├── ARCHITECTURE_DECISION.md     ← Design decisions (WHY)
 ├── ARCHITECTURE_MONOREPO.md     ← System design (HOW)
