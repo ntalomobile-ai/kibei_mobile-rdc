@@ -20,6 +20,8 @@
   "devDependencies": {
     "turbo": "latest",
     "typescript": "^5.3.3",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
     "@tailwindcss/postcss": "^4.0.0"
   },
   "packageManager": "npm@10.0.0",
